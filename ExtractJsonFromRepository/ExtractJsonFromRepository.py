@@ -1,30 +1,49 @@
+import requests
 import json
-import gitlab
 
-# Create a GitLab API object
-api = gitlab.Gitlab('https://gitlab.com', private_token='YOUR_PRIVATE_TOKEN')
 
-# Retrieve a project by its ID or path
-project = api.projects.get('your_project_id')
+def download_issues(repo_owner, repo_name, access_token):
+    base_url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/issues'
+    issues = []
 
-# Get all issues from the project
-issues = project.issues.list()
+    page = 1
+    while True:
+        # Fetch a page of issues from the GitHub API, including the access token
+        headers = {'Authorization': f'token {access_token}'}
+        response = requests.get(f'{base_url}?state=all&page={page}', headers=headers)
 
-# Create a list to store the issues
-issue_list = []
+        if response.status_code != 200:
+            print(f'Error retrieving issues: {response.text}')
+            return
 
-# Iterate over the issues and store relevant information in the list
-for issue in issues:
-    issue_info = {
-        'id': issue.id,
-        'title': issue.title,
-        'description': issue.description,
-        'status': issue.state,
-    }
-    issue_list.append(issue_info)
+        page_issues = response.json()
 
-# Write the issue list to a JSON file
-with open('issues.json', 'w') as file:
-    json.dump(issue_list, file)
+        if not page_issues:
+            # No more issues found, stop pagination
+            break
 
-print("Issues have been stored in issues.json.")
+        issues.extend(page_issues)
+        page += 1
+
+    return issues
+
+def get_issues_in_json():
+    # Specify the repository owner and name
+    repo_owner = 'vaadin'
+    repo_name = 'flow'
+
+    # Specify your personal access token
+    access_token = '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'
+
+    # Download the issues
+    all_issues = download_issues(repo_owner, repo_name, access_token)
+
+    if all_issues:
+        # Store the issues in a JSON file
+        file_path = 'next.js_issues.json'
+        with open(file_path, 'w') as file:
+            json.dump(all_issues, file, indent=4)
+
+        print(f'All issues have been downloaded and stored in {file_path}.')
+    else:
+        print('No issues found or an error occurred during the download.')

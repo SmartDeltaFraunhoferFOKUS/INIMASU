@@ -1,13 +1,9 @@
-from ExtractJsonFromRepository import ExtractJsonFromRepository
-from JsonToIssue import JsonToIssue
-from VisualizeIssues import VisualizeIssues
+from ExtractJsonFromRepository.ExtractJsonFromRepository import get_issues_in_json
+from JsonToIssue.JsonToIssue import jsonToIssue
+from VisualizeIssues.VisualizeIssues import visualize
 
 
-""""Nur wenn noch kein json existiert oder ein neues geladen werden soll""""
-# ExtractJsonFromRepository
 
-"""""Nur wenn noch keine AllIssues Liste existiert oder sich json geändert hat""""
-# JsonToIssue
-
-#VisualizeIssue
-
+# get_issues_in_json()
+issues = jsonToIssue("C:/Users/joh11155/PycharmProjects/issue-intelligence/Main/next.js_issues.json")
+visualize(issues)
