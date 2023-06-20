@@ -7,7 +7,7 @@ def jsonToIssue(path):
     return allIssues
 def createAllIssues(ListOfDicOfIssues, keys):
     allIssues = []
-    Keys = ["body", "created_at", "labels", "updated_at", "closed_at", "reactions","comments","state"]
+    Keys = ["body", "created_at", "labels", "updated_at", "closed_at", "reactions","comments","state", "reactions"]
     for dicOfIssue in ListOfDicOfIssues:
         newIssue = IssueClass(**{ key : dicOfIssue[key] for key in Keys})
         allIssues.append(newIssue)
