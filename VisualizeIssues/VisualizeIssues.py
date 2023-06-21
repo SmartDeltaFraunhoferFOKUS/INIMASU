@@ -26,9 +26,9 @@ def visualize(issues):
         if closed_dates[i] is None:
             open_answer_body.append(bodies[i])
 
-    visualizeDates(created_dates, closed_dates)
+    #visualizeDates(created_dates, closed_dates)
     #visualizeBodyAnswertime(bodies, answer_times, open_answer_body)
     #visualizeComments(comments,openIssues,answer_times,bodies)
-    #visualizeLabels(openIssues, answer_times, labels)
+    visualizeLabels(openIssues, answer_times, labels)
 
     """Next up is the correlation between reactions and closed request, reactions body length, labels and reactions"""

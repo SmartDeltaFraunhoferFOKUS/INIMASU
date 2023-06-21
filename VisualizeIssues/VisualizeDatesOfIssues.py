@@ -60,8 +60,14 @@ def visualizeDates(created_dates, closed_dates):
     ax2.set_title("Average Time to Close Issues per Month")
     ax2.set_xticklabels(x_labels, rotation=45)
 
+    # Add the number of entries in Created Date as a text box
+    num_entries = len(created_dates)
+    plt.text(1.02, 0.5, f"Number of Entries:\n{num_entries}", transform=ax1.transAxes, fontsize=12,
+             verticalalignment='center')
+
     # Adjust spacing between subplots
     plt.tight_layout()
 
     # Display the plot
     plt.show()
+

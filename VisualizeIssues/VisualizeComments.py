@@ -43,6 +43,7 @@ def visualizeComments(comments, openIssues, answer_times, body_length):
     # Set common title for the entire figure
     fig.suptitle('Distribution Analysis of Issues', fontsize=16)
 
+
     # Adjust spacing between subplots
     plt.subplots_adjust(hspace=0.6)
 
