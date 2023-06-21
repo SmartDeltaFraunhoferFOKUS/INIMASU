@@ -48,6 +48,6 @@ def visualizeLabels(openIssues, answer_times, labels):
     ax1.tick_params(axis='both', labelsize=12)
 
     # Display the plot
-    #plt.show()
+    plt.show()
 
     generate_label_heatmap(labels, answer_times)
