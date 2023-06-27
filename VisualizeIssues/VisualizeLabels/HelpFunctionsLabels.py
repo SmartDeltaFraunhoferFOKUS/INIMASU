@@ -5,12 +5,17 @@ def getLabelNames(labels):
     names = []
     for label in labels:
         if type(label) == list:
-            names.append(getNames(label))
+            names.append(getNamesFromList(label))
+        elif type(label) == dict:
+            names.append(getNamesFromDict(label))
         else:
             names.append(None)
     return names
 
-def getNames(label):
+def getNamesFromDict(label):
+    return label["name"]
+
+def getNamesFromList(label):
     names = []
     for l in label:
         names.append(l["name"])

@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.widgets import TextBox
 from VisualizeIssues.VisualizeLabels.HelpFunctionsLabels import getLabelNames
 
 def generate_label_heatmap(labels, answer_times):
@@ -28,9 +29,11 @@ def generate_label_heatmap(labels, answer_times):
                 row.append(np.nan)
         heatmap_data_list.append(row)
 
-    # Plot the heatmap
+    # Create figure and axes
     fig, ax = plt.subplots(figsize=(15, 12))
-    im = ax.imshow(heatmap_data_list, cmap='coolwarm')
+
+    # Plot the heatmap
+    im = ax.imshow(heatmap_data_list, cmap='viridis')
 
     # Set x-axis and y-axis labels
     ax.set_xticks(np.arange(len(allKeys)))
@@ -38,9 +41,29 @@ def generate_label_heatmap(labels, answer_times):
     ax.set_xticklabels(allKeys, rotation=90, ha='right', fontsize=8)
     ax.set_yticklabels(allKeys, fontsize=8)
 
+    # Hide grid lines
+    ax.grid(False)
+
+    # Add colorbar
+    cbar = fig.colorbar(im)
+    cbar.set_label('Average Answer Time')
+
     # Enable zooming and panning
-    fig.colorbar(im)
     plt.tight_layout()
+
+    def search_callback(text):
+        search_label = text.strip()
+        if search_label:
+            indices = [i for i, label in enumerate(allKeys) if label == search_label]
+            if indices:
+                ax.scatter(indices, indices, marker='o', s=100, edgecolors='red', facecolors='none')
+                plt.draw()
+
+    # Create search bar
+    search_ax = plt.axes([0.06, 0.4, 0.1, 0.05])
+    search_textbox = TextBox(search_ax, 'Search Label')
+    search_textbox.on_submit(search_callback)
+
     plt.show()
 
 
