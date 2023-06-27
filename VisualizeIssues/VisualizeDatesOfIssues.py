@@ -50,7 +50,7 @@ def visualizeDates(created_dates, closed_dates):
     ax1.set_ylabel("Number of Issues")
     ax1.set_title("Number of Created, Closed, and Difference Issues per Month")
     ax1.legend()
-    ax1.set_xticklabels(x_labels, rotation=45)
+    ax1.set_xticklabels(x_labels, rotation=90)
 
     # Plotting the average time to close issues per month
     ax2 = fig.add_subplot(gs[1, 0])
@@ -58,7 +58,7 @@ def visualizeDates(created_dates, closed_dates):
     ax2.set_xlabel("Month-Year")
     ax2.set_ylabel("Average Time to Close (days)")
     ax2.set_title("Average Time to Close Issues per Month")
-    ax2.set_xticklabels(x_labels, rotation=45)
+    ax2.set_xticklabels(x_labels, rotation=90)
 
     # Add the number of entries in Created Date as a text box
     num_entries = len(created_dates)

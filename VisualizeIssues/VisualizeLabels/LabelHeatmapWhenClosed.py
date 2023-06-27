@@ -35,8 +35,8 @@ def generate_label_heatmap(labels, answer_times):
     # Set x-axis and y-axis labels
     ax.set_xticks(np.arange(len(allKeys)))
     ax.set_yticks(np.arange(len(allKeys)))
-    ax.set_xticklabels(allKeys, rotation=90, ha='right', fontsize=10)
-    ax.set_yticklabels(allKeys, fontsize=10)
+    ax.set_xticklabels(allKeys, rotation=90, ha='right', fontsize=8)
+    ax.set_yticklabels(allKeys, fontsize=8)
 
     # Enable zooming and panning
     fig.colorbar(im)
