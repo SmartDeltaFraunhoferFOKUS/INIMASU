@@ -6,7 +6,7 @@ from VisualizeIssues.VisualizeDates.VisualizeDatesOfIssues import visualizeDates
 from VisualizeIssues.VisualizeLabels.VisualizeLabels import visualizeLabels
 
 
-def visualizeIssues(issues):
+def visualize(issues):
     labels = [issue.labels if issue.labels else 'No Label' for issue in issues]
     comments = [issue.comments for issue in issues]
     created_dates = [datetime.strptime(issue.created_at, '%Y-%m-%dT%H:%M:%SZ') if issue.created_at else None for issue in issues]
