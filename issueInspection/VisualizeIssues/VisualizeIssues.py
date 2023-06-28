@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from VisualizeIssues.VisualizeBodyAnswertime import visualizeBodyAnswertime
-from VisualizeIssues.VisualizeComments import visualizeComments
-from VisualizeIssues.VisualizeDates.VisualizeDatesOfIssues import visualizeDates
-from VisualizeIssues.VisualizeLabels.VisualizeLabels import visualizeLabels
+from issueInspection.VisualizeIssues.VisualizeBodyAnswertime import visualizeBodyAnswertime
+from issueInspection.VisualizeIssues.VisualizeComments import visualizeComments
+from issueInspection.VisualizeIssues.VisualizeDates.VisualizeDatesOfIssues import visualizeDates
+from issueInspection.VisualizeIssues.VisualizeLabels.VisualizeLabels import visualizeLabels
 
 
 def visualize(issues):

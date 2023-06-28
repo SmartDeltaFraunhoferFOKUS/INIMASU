@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.gridspec import GridSpec
-from VisualizeIssues.VisualizeHelpFunctions import mean_responstime_bodylength
+from issueInspection.VisualizeIssues.VisualizeHelpFunctions import mean_responstime_bodylength
 
 def visualizeBodyAnswertime(bodies, answer_times, open_answer_body ):
     # Plot: Average answertime per length interval

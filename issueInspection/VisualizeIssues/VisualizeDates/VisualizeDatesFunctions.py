@@ -1,5 +1,5 @@
 import datetime
-from VisualizeIssues.VisualizeLabels.HelpFunctionsLabels import getLabelNames, isValidLabel
+from issueInspection.VisualizeIssues.VisualizeLabels.HelpFunctionsLabels import getLabelNames, isValidLabel
 
 
 def getavereageTimePerMonth(created_dates, closed_dates):

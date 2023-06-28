@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.gridspec import GridSpec
-from VisualizeIssues.VisualizeLabels.HelpFunctionsLabels import getLabelNames, get_labels_with_average_answer_time
-from VisualizeIssues.VisualizeLabels.LabelHeatmapWhenClosed import generate_label_heatmap
+from issueInspection.VisualizeIssues.VisualizeLabels.HelpFunctionsLabels import getLabelNames, get_labels_with_average_answer_time
+from issueInspection.VisualizeIssues.VisualizeLabels.LabelHeatmapWhenClosed import generate_label_heatmap
 
 
 def visualizeLabels(openIssues, answer_times, labels):

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.gridspec import GridSpec
-from VisualizeIssues.VisualizeHelpFunctions import get_mean_comments, get_comments_to_mean_answertime, \
+from issueInspection.VisualizeIssues.VisualizeHelpFunctions import get_mean_comments, get_comments_to_mean_answertime, \
     mean_responstime_bodylength
 
 

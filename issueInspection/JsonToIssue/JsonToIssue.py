@@ -1,5 +1,5 @@
 import json
-from Issue.IssueClass import IssueClass
+from issueInspection.Issue.IssueClass import IssueClass
 def jsonToIssue(path):
     ListOfDicOfIssues = readJson(path)
     keys = list(ListOfDicOfIssues[0].keys())

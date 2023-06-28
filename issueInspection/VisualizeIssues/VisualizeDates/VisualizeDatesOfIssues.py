@@ -3,7 +3,7 @@ import datetime
 import seaborn as sns
 from matplotlib.gridspec import GridSpec
 
-from VisualizeIssues.VisualizeDates.VisualizeDatesFunctions import getavereageTimePerMonth, getLabelsPerMonth, \
+from issueInspection.VisualizeIssues.VisualizeDates.VisualizeDatesFunctions import getavereageTimePerMonth, getLabelsPerMonth, \
     getTopUsedWords
 
 
