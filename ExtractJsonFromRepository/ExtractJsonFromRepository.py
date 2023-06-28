@@ -27,10 +27,7 @@ def download_issues(repo_owner, repo_name, access_token):
 
     return issues
 
-def get_issues_in_json():
-    # Specify the repository owner and name
-    repo_owner = 'vaadin'
-    repo_name = 'flow'
+def get_issues_in_json(repo_owner,repo_name):
 
     # Specify your personal access token
     access_token = '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'

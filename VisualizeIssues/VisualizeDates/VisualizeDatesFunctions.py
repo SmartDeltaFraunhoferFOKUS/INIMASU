@@ -1,5 +1,5 @@
 import datetime
-
+from collections import Counter
 from VisualizeIssues.VisualizeLabels.HelpFunctionsLabels import getLabelNames, isValidLabel
 
 
@@ -30,9 +30,7 @@ def getavereageTimePerMonth(created_dates, closed_dates):
     created_counts = [months_data[month_year]["created_count"] for month_year in month_years]
     closed_counts = [months_data[month_year]["closed_count"] for month_year in month_years]
     average_times = [
-        months_data[month_year]["total_time"] / months_data[month_year]["closed_count"] if months_data[month_year][
-                                                                                               "closed_count"] != 0 else 0
-        for month_year in month_years]
+        months_data[month_year]["total_time"] / months_data[month_year]["closed_count"] if months_data[month_year]["closed_count"] != 0 else 0 for month_year in month_years]
     difference_counts = [created - closed for created, closed in zip(created_counts, closed_counts)]
 
     return month_years, created_counts, closed_counts, average_times, difference_counts
@@ -54,7 +52,7 @@ def getLabelsPerMonth(sorted_data_labels):
     return monthly_labels
 
 
-from collections import Counter
+
 
 def getTopUsedWords(labelsPerMonth):
     top_words_per_month = {}

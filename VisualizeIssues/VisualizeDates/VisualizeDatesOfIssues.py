@@ -62,14 +62,13 @@ def visualizeDates(created_dates, closed_dates, labels):
             if 0 <= month_index < len(month_years):
                 month_year = month_years[month_index]
                 top_labels = labelsMonthTopUsed[month_year]
-                top_labels = [label[0] for label in top_labels]  # Extract label names
-                top_labels_str = "\n".join(top_labels)
+                top_labels_str = "\n".join([f"{label[0]}: {label[1]}" for label in top_labels])
                 plt.gcf().suptitle("")  # Clear previous annotation
                 plt.gcf().text(0.5, 0.5, f"Top Used Labels for {month_year}:\n{top_labels_str}",
                                ha='center', va='center',
                                bbox=dict(boxstyle="round", fc="w"),
                                fontsize=12)
-                plt.draw(
+                plt.draw()
 
     # Connect the click event to the function
     fig.canvas.mpl_connect('button_press_event', display_top_labels)

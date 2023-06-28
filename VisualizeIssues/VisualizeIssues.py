@@ -1,10 +1,12 @@
 from datetime import datetime
 
+from VisualizeIssues.VisualizeBodyAnswertime import visualizeBodyAnswertime
+from VisualizeIssues.VisualizeComments import visualizeComments
 from VisualizeIssues.VisualizeDates.VisualizeDatesOfIssues import visualizeDates
 from VisualizeIssues.VisualizeLabels.VisualizeLabels import visualizeLabels
 
 
-def visualize(issues):
+def visualizeIssues(issues):
     labels = [issue.labels if issue.labels else 'No Label' for issue in issues]
     comments = [issue.comments for issue in issues]
     created_dates = [datetime.strptime(issue.created_at, '%Y-%m-%dT%H:%M:%SZ') if issue.created_at else None for issue in issues]
@@ -21,8 +23,8 @@ def visualize(issues):
             open_answer_body.append(bodies[i])
 
     visualizeDates(created_dates, closed_dates, labels)
-    #visualizeBodyAnswertime(bodies, answer_times, open_answer_body)
-    #visualizeComments(comments,openIssues,answer_times,bodies)
+    visualizeBodyAnswertime(bodies, answer_times, open_answer_body)
+    visualizeComments(comments,openIssues,answer_times,bodies)
     visualizeLabels(openIssues, answer_times, labels)
 
 

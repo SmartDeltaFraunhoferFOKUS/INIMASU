@@ -42,7 +42,7 @@ def updateOverview(overview, labels, answer_time):
 
 def isValidLabel(label):
     for s in label:
-        if s.isdigit():
+        if s.isdigit() or s in ["/","\\"]:
             return False
     return True
 
