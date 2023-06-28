@@ -1,5 +1,4 @@
 import datetime
-from collections import Counter
 from VisualizeIssues.VisualizeLabels.HelpFunctionsLabels import getLabelNames, isValidLabel
 
 

@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-from datetime import datetime
 from matplotlib.gridspec import GridSpec
 from VisualizeIssues.VisualizeHelpFunctions import mean_responstime_bodylength
 
