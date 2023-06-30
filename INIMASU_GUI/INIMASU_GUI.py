@@ -26,26 +26,41 @@ Combobox_repository_URI = ttk.Combobox(widget_main, textvariable=StringVar_repos
 Combobox_repository_URI["width"] = 120
 Combobox_repository_URI.grid(column=0, row=1)
 
-array_repository_uris=[]#("https://github.com/vaadin/flow", "https://github.com/vaadin/hilla", "https://github.com/vaadin/flow-components", "https://github.com/vaadin/web-components")
-with open("array_repository_uris.json", 'r') as file:
-    array_repository_uris = json.load(file)
+Label_Entry_AccessToken = Label(widget_main, text="Access Token")
+Label_Entry_AccessToken.grid(column=0, row=2)
+
+StringVar_AccessToken=StringVar();
+Entry_AccessToken = Entry(widget_main, textvariable=StringVar_AccessToken)
+Entry_AccessToken.grid(column=0, row=3, sticky=(E,W))
+string_AccessToken_from_file=""
+if os.path.exists("access_token.json"):
+    with open("access_token.json", 'r') as file:
+        string_AccessToken_from_file = json.load(file)
+    StringVar_AccessToken.set(string_AccessToken_from_file);
+
+
+array_repository_uris=[]
+if os.path.exists("array_repository_uris.json"):
+    with open("array_repository_uris.json", 'r') as file:
+        array_repository_uris = json.load(file)
+else:
+    array_repository_uris=("https://github.com/vaadin/flow", "https://github.com/vaadin/hilla", "https://github.com/vaadin/flow-components", "https://github.com/vaadin/web-components")
 
 Combobox_repository_URI["values"] = array_repository_uris
 
 StringVar_Repository_File_Info = StringVar()
 Label_Repository_File_Info = Label(widget_main, textvariable=StringVar_Repository_File_Info)
-Label_Repository_File_Info.grid(column=0, row=2)
+Label_Repository_File_Info.grid(column=0, row=4)
 
 def ReadRepositoryInLocalDatabase():
-    get_issues_in_json("vaadin","flow","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","vaadin_flow.json")
+    get_issues_in_json("vaadin","flow",StringVar_AccessToken.get(),"vaadin_flow.json")
 
 Button_ReadIssuesInLocalDatabase = Button(widget_main, text="Read repository in local database", width=40, command=ReadRepositoryInLocalDatabase)
-Button_ReadIssuesInLocalDatabase.grid(column=0, row=3)
+Button_ReadIssuesInLocalDatabase.grid(column=0, row=5)
 Button_AnalyzeIssuesInLocalDatabase = Button(widget_main, text="Analyze issues in local database", width=40)
-Button_AnalyzeIssuesInLocalDatabase.grid(column=0, row=4)
+Button_AnalyzeIssuesInLocalDatabase.grid(column=0, row=6)
 Button_RemoveLocalDatabase = Button(widget_main, text="Remove local database", width=40)
-Button_RemoveLocalDatabase.grid(column=0, row=5)
-
+Button_RemoveLocalDatabase.grid(column=0, row=7)
 
 string_repository_owner = None
 string_repository_name = None
@@ -91,3 +106,7 @@ widget_main.mainloop()
 
 with open("array_repository_uris.json", 'w') as file:
     json.dump(array_repository_uris, file, indent=4)
+
+with open("access_token.json", 'w') as file:
+    json.dump(StringVar_AccessToken.get(), file, indent=4)
+
