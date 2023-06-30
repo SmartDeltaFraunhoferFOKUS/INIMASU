@@ -4,15 +4,15 @@ import json
 
 def download_issues(repo_owner, repo_name, access_token):
     base_url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/issues'
+    headers = {'Authorization': f'token {access_token}'}
     issues = []
 
     page = 1
     while True:
         # Fetch a page of issues from the GitHub API, including the access token
-        headers = {'Authorization': f'token {access_token}'}
         response = requests.get(f'{base_url}?state=all&page={page}', headers=headers)
 
-        if response.status_code != 200:
+        if not response.ok:
             print(f'Error retrieving issues: {response.text}')
             return
 
@@ -27,17 +27,13 @@ def download_issues(repo_owner, repo_name, access_token):
 
     return issues
 
-def get_issues_in_json(repo_owner,repo_name):
-
-    # Specify your personal access token
-    access_token = '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'
+def get_issues_in_json(repo_owner,repo_name, access_token='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',file_path='next.js_issues.json'):
 
     # Download the issues
     all_issues = download_issues(repo_owner, repo_name, access_token)
 
     if all_issues:
         # Store the issues in a JSON file
-        file_path = 'next.js_issues.json'
         with open(file_path, 'w') as file:
             json.dump(all_issues, file, indent=4)
 
