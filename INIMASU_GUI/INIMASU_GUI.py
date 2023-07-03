@@ -11,6 +11,9 @@ sys.path.append(str(pathlib.Path().resolve()))
 
 from ExtractJsonFromRepository.ExtractJsonFromRepository import get_issues_in_json
 
+string_repository_owner = None
+string_repository_name = None
+string_repository_local_database_name = None
 
 widget_main = Tk()
 widget_main.title("INIMASU")
@@ -53,7 +56,9 @@ Label_Repository_File_Info = Label(widget_main, textvariable=StringVar_Repositor
 Label_Repository_File_Info.grid(column=0, row=4)
 
 def ReadRepositoryInLocalDatabase():
-    get_issues_in_json("vaadin","flow",StringVar_AccessToken.get(),"vaadin_flow.json")
+    if StringVar_repository_URI.get() not in Combobox_repository_URI["values"]:
+        Combobox_repository_URI["values"] += (StringVar_repository_URI.get(),)
+    get_issues_in_json(string_repository_owner,string_repository_name,StringVar_AccessToken.get(),string_repository_local_database_name)
 
 Button_ReadIssuesInLocalDatabase = Button(widget_main, text="Read repository in local database", width=40, command=ReadRepositoryInLocalDatabase)
 Button_ReadIssuesInLocalDatabase.grid(column=0, row=5)
@@ -62,10 +67,7 @@ Button_AnalyzeIssuesInLocalDatabase.grid(column=0, row=6)
 Button_RemoveLocalDatabase = Button(widget_main, text="Remove local database", width=40)
 Button_RemoveLocalDatabase.grid(column=0, row=7)
 
-string_repository_owner = None
-string_repository_name = None
-string_repository_local_database_name = None
-def Handle_Repository_URI_changed(event_argument):
+def Handle_StringVar_repository_URI_Changed(index, value, op):
     string_repository_owner = None
     string_repository_name = None
     string_repository_local_database_name = None
@@ -95,10 +97,8 @@ def Handle_Repository_URI_changed(event_argument):
         Button_ReadIssuesInLocalDatabase['state']=tkinter.DISABLED
 
 
-
-Combobox_repository_URI.bind('<<ComboboxSelected>>',Handle_Repository_URI_changed)
+StringVar_repository_URI.trace("w", Handle_StringVar_repository_URI_Changed)
 Combobox_repository_URI.current(0)
-Handle_Repository_URI_changed(None)
 
 
 
