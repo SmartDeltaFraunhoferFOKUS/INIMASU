@@ -12,12 +12,15 @@ possible other repository to test on
 
 
 def main(repo_owner='vaadin', repo_name='flow', matrix=None, access_token='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'):
+    matrix_json_file = f'next.js_{repo_owner}_{matrix}.json'
     if matrix:
-        issues_json_file = f'next.js_{repo_owner}_issues.json'
-        if not os.path.exists(issues_json_file):
+
+        if not os.path.exists(matrix_json_file):
             get_matrix_in_json(repo_owner, repo_name, matrix, access_token)
-        issues = jsonToIssue(issues_json_file)
+
+    if matrix == "issues":
+        issues = jsonToIssue(matrix_json_file)
         visualize(issues)
 
 
-main(repo_owner = "vercel", repo_name = "next.js",matrix="issues")
+main(matrix = "issues")
