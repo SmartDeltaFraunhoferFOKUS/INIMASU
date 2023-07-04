@@ -27,16 +27,13 @@ def download_issues(repo_owner, repo_name, access_token):
 
     return issues
 
-def get_issues_in_json(repo_owner,repo_name):
-    # Specify your personal access token
-    access_token = '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'
-
+def get_issues_in_json(repo_owner,repo_name, access_token):
     # Download the issues
     all_issues = download_issues(repo_owner, repo_name, access_token)
 
     if all_issues:
         # Store the issues in a JSON file
-        file_path = 'next.js_issues.json'
+        file_path = f'next.js_{repo_owner}_issues.json'
         with open(file_path, 'w') as file:
             json.dump(all_issues, file, indent=4)
 

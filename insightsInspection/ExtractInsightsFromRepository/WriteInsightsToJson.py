@@ -2,7 +2,7 @@ import requests
 import json
 
 
-def download_issues(repo_owner, repo_name, access_token, matrix):
+def download_matrix(repo_owner, repo_name, access_token, matrix):
     base_url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/{matrix}'
     matrix = []
 
@@ -27,16 +27,13 @@ def download_issues(repo_owner, repo_name, access_token, matrix):
 
     return matrix
 
-def get_matrix_in_json(repo_owner,repo_name, matrix):
-    # Specify your personal access token
-    access_token = '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'
-
+def get_matrix_in_json(repo_owner,repo_name, matrix, access_token):
     # Download the issues
-    all_matrix = download_issues(repo_owner, repo_name, access_token,matrix)
+    all_matrix = download_matrix(repo_owner, repo_name, access_token,matrix)
 
     if all_matrix:
         # Store the issues in a JSON file
-        file_path = f'next.js_{matrix}.json'
+        file_path = f'next.js_{repo_owner}_{matrix}.json'
         with open(file_path, 'w') as file:
             json.dump(all_matrix, file, indent=4)
 
