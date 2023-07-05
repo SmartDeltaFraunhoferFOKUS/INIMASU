@@ -1,4 +1,4 @@
-from issueInspection.VisualizeIssues.VisualizeHelpFunctions import calculateMean
+from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssuesHelpFunctions import calculateMean
 
 
 def getLabelNames(labels):

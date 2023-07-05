@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import TextBox
-from issueInspection.VisualizeIssues.VisualizeLabels.HelpFunctionsLabels import getLabelNames
+from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeLabels.HelpFunctionsLabels import getLabelNames
 
 def generate_label_heatmap(labels, answer_times):
     label_names = getLabelNames(labels)

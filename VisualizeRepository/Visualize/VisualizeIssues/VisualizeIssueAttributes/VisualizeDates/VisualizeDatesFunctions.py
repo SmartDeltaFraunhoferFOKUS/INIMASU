@@ -1,5 +1,6 @@
-import datetime
-from issueInspection.VisualizeIssues.VisualizeLabels.HelpFunctionsLabels import getLabelNames, isValidLabel
+from datetime import datetime
+from collections import defaultdict
+from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeLabels.HelpFunctionsLabels import getLabelNames, isValidLabel
 
 
 def getavereageTimePerMonth(created_dates, closed_dates):
@@ -38,7 +39,7 @@ def getLabelsPerMonth(sorted_data_labels):
     monthly_labels = {}
 
     for label, created_date in sorted_data_labels:
-        month = datetime.datetime(created_date.year, created_date.month, 1).strftime('%Y-%m')
+        month = datetime(created_date.year, created_date.month, 1).strftime('%Y-%m')  # Fix the line here
 
         if month not in monthly_labels:
             monthly_labels[month] = []
@@ -76,3 +77,21 @@ def getTopUsedWords(labelsPerMonth):
         top_words_per_month[month] = top_words
 
     return top_words_per_month
+
+
+def calculate_average_commits(commits):
+    commits_per_month = defaultdict(list)
+
+    for commit in commits:
+        commit_date = datetime.strptime(commit.date, "%Y-%m-%dT%H:%M:%SZ")
+        month_year = commit_date.strftime("%Y-%m")
+        commits_per_month[month_year].append(commit_date)
+
+    average_commits_per_month = {}
+    for month_year, commit_list in sorted(commits_per_month.items()):
+        average_commits = len(commit_list) / len(set([commit.day for commit in commit_list]))
+        average_commits_per_month[month_year] = average_commits
+
+    return average_commits_per_month
+
+

@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from issueInspection.VisualizeIssues.VisualizeBodyAnswertime import visualizeBodyAnswertime
-from issueInspection.VisualizeIssues.VisualizeComments import visualizeComments
-from issueInspection.VisualizeIssues.VisualizeDates.VisualizeDatesOfIssues import visualizeDates
-from issueInspection.VisualizeIssues.VisualizeLabels.VisualizeLabels import visualizeLabels
+from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeBodyAnswertime import visualizeBodyAnswertime
+from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeComments import visualizeComments
+from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeDates.VisualizeDates import visualizeDates
+from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeLabels.VisualizeLabels import visualizeLabels
 
 
-def visualize(issues):
+def visualizeIssues(issues):
     labels = [issue.labels if issue.labels else 'No Label' for issue in issues]
     comments = [issue.comments for issue in issues]
     created_dates = [datetime.strptime(issue.created_at, '%Y-%m-%dT%H:%M:%SZ') if issue.created_at else None for issue in issues]
