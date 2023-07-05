@@ -12,9 +12,9 @@ from tkinter.tix import COLUMN
 
 sys.path.append(str(pathlib.Path().resolve()))
 
-from ExtractJsonFromRepository.ExtractJsonFromRepository import get_issues_in_json
-from JsonToIssue.JsonToIssue import jsonToIssue
-from VisualizeIssues.VisualizeIssues import visualizeIssues
+from issueInspection.ExtractJsonFromRepository.ExtractJsonFromRepository import get_issues_in_json, get_issues_in_json_file
+from issueInspection.JsonToIssue.JsonToIssue import jsonToIssue
+from issueInspection.VisualizeIssues.VisualizeIssues import visualize
 from UI_Elements.HoverButton import HoverButton
 
 class INIMASU_GUI:
@@ -75,7 +75,7 @@ class INIMASU_GUI:
         Label_Repository_File_Info.grid(column=0, row=4, sticky=W)
 
         def ReadRepositoryInLocalDatabase():
-            if get_issues_in_json(StringVar_repository_owner.get(),StringVar_repository_name.get(),StringVar_AccessToken.get(),StringVar_repository_local_database_name.get()):
+            if get_issues_in_json_file(StringVar_repository_owner.get(),StringVar_repository_name.get(),StringVar_AccessToken.get(),StringVar_repository_local_database_name.get()):
                 if StringVar_repository_URI.get() not in Combobox_repository_URI["values"]:
                     Combobox_repository_URI["values"] += (StringVar_repository_URI.get(),)
                     self.bool_array_repository_uris_changed = True
@@ -86,7 +86,7 @@ class INIMASU_GUI:
 
         def AnalyzeIssuesInLocalDatabase():
             issues = jsonToIssue(StringVar_repository_local_database_name.get())
-            visualizeIssues(issues)
+            visualize(issues)
 
         def RemoveLocalDatabase():
             if os.path.exists(StringVar_repository_local_database_name.get()):

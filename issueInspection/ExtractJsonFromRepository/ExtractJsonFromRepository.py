@@ -40,3 +40,17 @@ def get_issues_in_json(repo_owner,repo_name, access_token):
         print(f'All issues have been downloaded and stored in {file_path}.')
     else:
         print('No issues found or an error occurred during the download.')
+
+
+def get_issues_in_json_file(repo_owner,repo_name, access_token, file_path):
+    # Download the issues
+    all_issues = download_issues(repo_owner, repo_name, access_token)
+
+    if all_issues:
+        # Store the issues in a JSON file
+        with open(file_path, 'w') as file:
+            json.dump(all_issues, file, indent=4)
+
+        print(f'All issues have been downloaded and stored in {file_path}.')
+    else:
+        print('No issues found or an error occurred during the download.')
