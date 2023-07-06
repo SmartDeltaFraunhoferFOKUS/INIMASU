@@ -19,4 +19,4 @@ def main(repo_owner='vaadin', repo_name='flow', matrices = ["issues"], access_to
     visualize(matrices, matricesFiles)
 
 
-main(repo_owner="vercel", repo_name="next.js", matrices=["issues"])
+main(repo_owner = "vercel",repo_name = "next.js",matrices=["issues","commits"])
