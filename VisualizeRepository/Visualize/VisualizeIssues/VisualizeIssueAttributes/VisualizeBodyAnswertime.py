@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.gridspec import GridSpec
 from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssuesHelpFunctions import mean_responstime_bodylength
-
+#visualize the bodylength in regard to the average closing time
 def visualizeBodyAnswertime(bodies, answer_times, open_answer_body ):
     # Plot: Average answertime per length interval
     interval = 1000

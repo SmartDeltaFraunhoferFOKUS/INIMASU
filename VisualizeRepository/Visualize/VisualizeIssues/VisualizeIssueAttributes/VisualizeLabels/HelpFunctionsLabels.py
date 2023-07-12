@@ -1,6 +1,6 @@
 from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssuesHelpFunctions import calculateMean
 
-
+#help functions for visualizeLables
 def getLabelNames(labels):
     names = []
     for label in labels:

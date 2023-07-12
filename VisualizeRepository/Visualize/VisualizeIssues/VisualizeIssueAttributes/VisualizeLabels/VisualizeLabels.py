@@ -4,7 +4,7 @@ from matplotlib.gridspec import GridSpec
 from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeLabels.HelpFunctionsLabels import getLabelNames, get_labels_with_average_answer_time
 from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeLabels.LabelHeatmapWhenClosed import generate_label_heatmap
 
-
+#Visualizes the labels attached to the issues to avrg. closing time
 def visualizeLabels(openIssues, answer_times, labels):
     sns.set_palette("Set2")
 
@@ -43,5 +43,5 @@ def visualizeLabels(openIssues, answer_times, labels):
 
 
     plt.show()
-
+    #generates a heatmap to get overview between two labels and their avrg. combined closing time
     generate_label_heatmap(labels, answer_times)

@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import TextBox
 from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeLabels.HelpFunctionsLabels import getLabelNames
 
+
+# generates a heatmap to get overview between two labels and their avrg. combined closing time
+
 def generate_label_heatmap(labels, answer_times):
     label_names = getLabelNames(labels)
     label_data = get_combined_label_data(label_names, answer_times)

@@ -1,8 +1,11 @@
 from datetime import datetime
 from collections import defaultdict
 from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeLabels.HelpFunctionsLabels import getLabelNames, isValidLabel
+import matplotlib.pyplot as plt
 
 
+
+#Help function to create the needed datapoints for visualizeDates
 def getavereageTimePerMonth(created_dates, closed_dates):
     months_data = {}
 
@@ -89,9 +92,25 @@ def calculate_average_commits(commits):
 
     average_commits_per_month = {}
     for month_year, commit_list in sorted(commits_per_month.items()):
-        average_commits = len(commit_list) / len(set([commit.day for commit in commit_list]))
-        average_commits_per_month[month_year] = average_commits
+        average_commits_per_month[month_year] = len(commit_list)
 
     return average_commits_per_month
+
+def calculate_forks_per_month(forks):
+    forks_per_month = defaultdict(list)
+
+    for fork in forks:
+        fork_date = datetime.strptime(fork.created_at, "%Y-%m-%dT%H:%M:%SZ")
+        month_year = fork_date.strftime("%Y-%m")
+        forks_per_month[month_year].append(fork_date)
+
+    count_forks_per_month = {}
+    for month_year, commit_list in sorted(forks_per_month.items()):
+        count_forks_per_month[month_year] = len(commit_list)
+
+    return count_forks_per_month
+
+
+
 
 

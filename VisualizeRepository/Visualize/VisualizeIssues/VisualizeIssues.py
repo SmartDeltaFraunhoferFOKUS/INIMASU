@@ -6,6 +6,7 @@ from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.Visu
 from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeLabels.VisualizeLabels import visualizeLabels
 
 
+# creates data points from the issues to get insight
 def visualizeIssues(issues):
     labels = [issue.labels if issue.labels else 'No Label' for issue in issues]
     comments = [issue.comments for issue in issues]
@@ -16,12 +17,9 @@ def visualizeIssues(issues):
     bodies = [len(issue.body) if issue.body else 0 for issue in issues]
     answer_times = [(closed - created).days if closed and created else None for created, closed in
                     zip(created_dates, closed_dates)]
+    open_answer_body = [bodies[i] for i in range(len(bodies)) if closed_dates[i] is None]
 
-    open_answer_body = []
-    for i in range(len(bodies)):
-        if closed_dates[i] is None:
-            open_answer_body.append(bodies[i])
-
+    #different visualization functions
     visualizeDates(created_dates, closed_dates, labels)
     visualizeBodyAnswertime(bodies, answer_times, open_answer_body)
     visualizeComments(comments,openIssues,answer_times,bodies)

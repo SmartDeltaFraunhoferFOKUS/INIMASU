@@ -2,6 +2,7 @@ from VisualizeRepository.ExtractMatrixFromRepository.WriteInsightsToJson import 
 import os
 
 def createJsonFromMatrix(repo_owner,repo_name,matrix,access_token):
+    #checks if the wanted json exists and writes json, if needed
     matrix_json_file = f'next.js_{repo_owner}_{matrix}.json'
     if not os.path.exists(matrix_json_file):
         get_matrix_in_json(repo_owner, repo_name, matrix, access_token)

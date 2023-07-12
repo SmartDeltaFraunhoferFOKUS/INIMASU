@@ -4,7 +4,7 @@ from matplotlib.gridspec import GridSpec
 from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssuesHelpFunctions import get_mean_comments, get_comments_to_mean_answertime, \
     mean_responstime_bodylength
 
-
+#Visualizes comments to see, wether there is a connection between closing time and comments
 def visualizeComments(comments, openIssues, answer_times, body_length):
     sns.set_palette("Set2")
 
