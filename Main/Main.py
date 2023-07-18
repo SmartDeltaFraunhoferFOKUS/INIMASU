@@ -19,7 +19,7 @@ def main(repo_owner='vaadin', repo_name='flow', matrices=["issues"], access_toke
     visualize(matrices, matricesFiles)
 
 
-main( repo_owner = "vercel",repo_name = "next.js",matrices=["issues"])
+main(matrices=["issues","commits"])
 
 """
 possible other repository to test on
