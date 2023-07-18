@@ -9,6 +9,8 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from GenerateDataSets import getData
 
+n_days_prediction = 1
+
 # Call the getData function and get the data
 dates, commit_counts, issue_counts = getData(issuePath='../Main/next.js_vercel_issues.json', commitPath='../Main/next.js_vercel_commits.json', numberIssues=True)
 
@@ -16,12 +18,12 @@ dates, commit_counts, issue_counts = getData(issuePath='../Main/next.js_vercel_i
 dates_numeric = [(date - min(dates)).days for date in dates]
 
 #Converts to np.array
-issue_counts = np.array(issue_counts)
+issue_counts = np.array(issue_counts[n_days_prediction:])
 
 # Normalize commit_counts and dates_numeric between 0 and 1
 scaler = MinMaxScaler()
-commit_counts = scaler.fit_transform(np.array(commit_counts).reshape(-1, 1)).flatten()
-dates_numeric = scaler.fit_transform(np.array(dates_numeric).reshape(-1, 1)).flatten()
+commit_counts = scaler.fit_transform(np.array(commit_counts[:-n_days_prediction]).reshape(-1, 1)).flatten()
+dates_numeric = scaler.fit_transform(np.array(dates_numeric[:-n_days_prediction]).reshape(-1, 1)).flatten()
 
 # Split the data into training and testing datasets (80% for training, 20% for testing)
 dates_train, dates_test, commit_counts_train, commit_counts_test, issue_counts_train, issue_counts_test = train_test_split(
@@ -56,7 +58,7 @@ print(f"Test loss: {loss:.4f}, Test MAE: {mae:.4f}")
 #Calculate standard deviation
 average_deviation = np.mean(issue_counts)
 standard_deviation = np.std(issue_counts)
-print(f"Mean: {average_deviation}")
+print(f"Mean Value: {average_deviation}")
 print(f"Standard Deviation: {standard_deviation}")
 model.save("my_trained_model_amount.h5")
 

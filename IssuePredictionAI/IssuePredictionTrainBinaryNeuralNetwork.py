@@ -8,9 +8,19 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from GenerateDataSets import getData
-#alternativ repository issuePath='../Main/next.js_vercel_issues.json', commitPath='../Main/next.js_vercel_commits.json'
+
+# Alternative repository issuePath='../Main/next.js_vercel_issues.json', commitPath='../Main/next.js_vercel_commits.json'
+
+n_days_prediction = 1
+
 # Call the getData function and get the data
 dates, commit_counts, issue_labels = getData(issuePath='../Main/next.js_vercel_issues.json', commitPath='../Main/next.js_vercel_commits.json')
+
+# Shift issue labels by n_days_prediction
+issue_labels_shifted = issue_labels[n_days_prediction:]
+# Remove the last n_days_prediction elements from commit_counts and dates
+commit_counts = commit_counts[:-n_days_prediction]
+dates = dates[:-n_days_prediction]
 
 # Convert the datetime.date objects to numeric values (days since a reference date)
 dates_numeric = [(date - min(dates)).days for date in dates]
@@ -22,14 +32,14 @@ dates_numeric = scaler.fit_transform(np.array(dates_numeric).reshape(-1, 1)).fla
 
 # Split the data into training and testing datasets (80% for training, 20% for testing)
 dates_train, dates_test, commit_counts_train, commit_counts_test, issue_labels_train, issue_labels_test = train_test_split(
-    dates_numeric, commit_counts, issue_labels, test_size=0.2, random_state=42)
+    dates_numeric, commit_counts, issue_labels_shifted, test_size=0.2, random_state=42)
 
 # Build the TensorFlow model
 model = Sequential([
     Dense(128, activation='relu', input_shape=(2,)),  # Two features: commit count and days since reference date
     Dense(64, activation='relu'),
     Dense(32, activation='relu'),
-Dense(32, activation='sigmoid'),
+    Dense(32, activation='sigmoid'),
     Dense(1, activation='sigmoid')  # Output layer with sigmoid activation for binary classification
 ])
 
@@ -48,4 +58,6 @@ input_data_test = np.column_stack((commit_counts_test, dates_test))
 # Evaluate the model on the test data
 loss, accuracy = model.evaluate(input_data_test, issue_labels_test)
 print(f"Test loss: {loss:.4f}, Test accuracy: {accuracy:.4f}")
+
+# Save the model
 model.save("my_trained_model_binary.h5")
