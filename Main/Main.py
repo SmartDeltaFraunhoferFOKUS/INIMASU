@@ -9,8 +9,7 @@ from VisualizeRepository.Visualize.Visualize import visualize
 # The Json is visualized afterwards
 
 
-def main(repo_owner='vaadin', repo_name='flow', matrices=["issues"],
-         access_token='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'):
+def main(repo_owner='vaadin', repo_name='flow', matrices=["issues"], access_token='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'):
     matricesFiles = []
     # checks if the json for the regarding matrix exists and creates a json if needed
     for matrix in matrices:
