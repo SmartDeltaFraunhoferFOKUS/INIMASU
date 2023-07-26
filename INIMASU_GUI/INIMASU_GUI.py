@@ -12,10 +12,13 @@ from tkinter.tix import COLUMN
 
 sys.path.append(str(pathlib.Path().resolve()))
 
-from issueInspection.ExtractJsonFromRepository.ExtractJsonFromRepository import get_issues_in_json, get_issues_in_json_file
-from issueInspection.JsonToIssue.JsonToIssue import jsonToIssue
-from issueInspection.VisualizeIssues.VisualizeIssues import visualize
+#from issueInspection.ExtractJsonFromRepository.ExtractJsonFromRepository import get_issues_in_json, get_issues_in_json_file
+#from issueInspection.JsonToIssue.JsonToIssue import jsonToIssue
+#from issueInspection.VisualizeIssues.VisualizeIssues import visualize
 from UI_Elements.HoverButton import HoverButton
+from Gantt_Issues_Control import Gantt_Issues_Control
+from GitHubAdapter.GitHubAdapter import ReadFromGitHubAndStoreInJson, PopulateModelDatabaseFromJson
+
 
 class INIMASU_GUI:
     def __init__(self):
@@ -26,6 +29,7 @@ class INIMASU_GUI:
         self.path_for_images="./INIMASU_GUI/Images/"
 
     def StartMainLoop(self):
+
         widget_main = Tk()
         widget_main.title("INIMASU")
         widget_main.geometry("800x600")
@@ -34,6 +38,7 @@ class INIMASU_GUI:
         Frame_Main = Frame(widget_main)
         Frame_Main.pack(fill=BOTH, expand=True, padx=2, pady=2)
         Frame_Main.grid_columnconfigure(0, weight=1)
+        Frame_Main.grid_rowconfigure(6,weight=1)
 
         StringVar_repository_owner = StringVar()
         StringVar_repository_name = StringVar()
@@ -52,7 +57,6 @@ class INIMASU_GUI:
             with open("access_token.json", 'r') as file:
                 string_AccessToken_from_file = json.load(file)
             StringVar_AccessToken.set(string_AccessToken_from_file);
-
 
         Label_Combobox_repository_URI = Label(Frame_Main, text="Repository URI")
         Label_Combobox_repository_URI.grid(column=0, row=2, sticky=W,pady=(8,0))
@@ -75,7 +79,7 @@ class INIMASU_GUI:
         Label_Repository_File_Info.grid(column=0, row=4, sticky=W)
 
         def ReadRepositoryInLocalDatabase():
-            if get_issues_in_json_file(StringVar_repository_owner.get(),StringVar_repository_name.get(),StringVar_AccessToken.get(),StringVar_repository_local_database_name.get()):
+            if ReadFromGitHubAndStoreInJson(StringVar_repository_owner.get(),StringVar_repository_name.get(),StringVar_AccessToken.get(),StringVar_repository_local_database_name.get()):
                 if StringVar_repository_URI.get() not in Combobox_repository_URI["values"]:
                     Combobox_repository_URI["values"] += (StringVar_repository_URI.get(),)
                     self.bool_array_repository_uris_changed = True
@@ -85,14 +89,16 @@ class INIMASU_GUI:
                 Update_UI()
 
         def AnalyzeIssuesInLocalDatabase():
-            issues = jsonToIssue(StringVar_repository_local_database_name.get())
-            visualize(issues)
+            if StringVar_repository_local_database_name.get():
+                if os.path.exists(StringVar_repository_local_database_name.get()+"_issues.json"):            
+                    RepositoryModelDatabase=PopulateModelDatabaseFromJson(StringVar_repository_local_database_name.get())
+                    Gantt_Issues_Control_Instance.Load(widget_main, RepositoryModelDatabase)
 
         def RemoveLocalDatabase():
-            if os.path.exists(StringVar_repository_local_database_name.get()):
+            if os.path.exists(StringVar_repository_local_database_name.get()+"_issues.json"):
                 messagebox_RemoveLocalDatabase_result = messagebox.askquestion('Caution:','Are you sure you want to remove local database?',icon='warning')
                 if messagebox_RemoveLocalDatabase_result == 'yes':
-                    os.remove(StringVar_repository_local_database_name.get())
+                    os.remove(StringVar_repository_local_database_name.get()+"_issues.json")
                     Update_UI()
 
         def Application_Exit():
@@ -128,13 +134,13 @@ class INIMASU_GUI:
                 if int_repository_name_start_index_minus_one > 0:
                     StringVar_repository_owner.set(string_URI[int_index_after_github_com:int_repository_name_start_index_minus_one])
                     StringVar_repository_name.set(string_URI[int_repository_name_start_index_minus_one+1:])
-                    StringVar_repository_local_database_name.set(StringVar_repository_owner.get()+"_"+StringVar_repository_name.get()+".json")
+                    StringVar_repository_local_database_name.set(StringVar_repository_owner.get()+"_"+StringVar_repository_name.get())
             Update_UI()
 
         def Update_UI():
             if StringVar_repository_local_database_name.get():
-                if os.path.exists(StringVar_repository_local_database_name.get()):
-                    StringVar_Repository_File_Info.set("Local databese file " + StringVar_repository_local_database_name.get() + " last updated " + str(datetime.datetime.fromtimestamp(pathlib.Path(StringVar_repository_local_database_name.get()).stat().st_mtime)))
+                if os.path.exists(StringVar_repository_local_database_name.get()+"_issues.json"):
+                    StringVar_Repository_File_Info.set("Local databese file " + StringVar_repository_local_database_name.get()+"_issues.json" + " last updated " + str(datetime.datetime.fromtimestamp(pathlib.Path(StringVar_repository_local_database_name.get()+"_issues.json").stat().st_mtime)))
                     Button_RemoveLocalDatabase['state']=tkinter.NORMAL
                     Button_AnalyzeIssuesInLocalDatabase['state']=tkinter.NORMAL
                     Button_ReadIssuesInLocalDatabase['state']=tkinter.NORMAL
@@ -153,7 +159,10 @@ class INIMASU_GUI:
         StringVar_repository_URI.trace("w", Handle_StringVar_repository_URI_Changed)
         Combobox_repository_URI.current(0)
 
-
+        Frame_Gnat_Issues_Control = Frame(Frame_Main, borderwidth=1, relief=GROOVE)
+        Frame_Gnat_Issues_Control.grid(column=0, row=6, sticky='wens',pady=(8,0))
+        
+        Gantt_Issues_Control_Instance = Gantt_Issues_Control()
 
         widget_main.mainloop()
 
