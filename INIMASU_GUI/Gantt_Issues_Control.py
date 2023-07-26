@@ -6,6 +6,7 @@ import matplotlib as mpl
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from matplotlib.widgets import Slider
+import matplotlib.dates as mdates
 
 
 class Gantt_Issues_Control:
@@ -55,13 +56,16 @@ class Gantt_Issues_Control:
         #figure_gantt_subplot.set_xlim(datetime.now() - relativedelta(years=1), datetime.now())
         figure_gantt_subplot.barh(y=labels, left=lefts, width=widths, color=colors, edgecolor=edgecolors)
         figure_gantt_subplot.set_xlabel("Time")
-        pyplot.axis([mpl.dates.date2num(datetime_last- relativedelta(years=1)), datetime_last, -0.5,9.5])
+        pyplot.axis([mpl.dates.date2num(datetime_last- relativedelta(years=1)), datetime_last, -0.5,9.5])        
+        figure_gantt_subplot.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
 
         #figure_gantt_subplot.set_title("time")
         figure_canvas_gantt = FigureCanvasTkAgg(figure_gantt, master=tkinter_context)
 
-        my_slider = Slider(pyplot.axes([0.1, 0.025, 0.8, 0.1], facecolor='teal'), "Time", valmin=mpl.dates.date2num(datetime_earliest), valmax=mpl.dates.date2num(datetime_last-relativedelta(years=1)), valinit=mpl.dates.date2num(datetime_last-relativedelta(years=1)))
+        my_slider = Slider(pyplot.axes([0.1, 0.025, 0.8, 0.1], facecolor='teal'), "Start time", valmin=mpl.dates.date2num(datetime_earliest), valmax=mpl.dates.date2num(datetime_last-relativedelta(years=1)), valinit=mpl.dates.date2num(datetime_last-relativedelta(years=1)))
+        my_slider.valtext.set_text( datetime_last-relativedelta(years=1) )
         def handle_horizontal_slider_changed(val):
+            my_slider.valtext.set_text(mdates.num2date(val).date())
             figure_gantt_subplot.axis([val, val+(mpl.dates.date2num(datetime_last)-mpl.dates.date2num(datetime_last-relativedelta(years=1))), -0.5,9.5])
             figure_canvas_gantt.draw_idle()
 
