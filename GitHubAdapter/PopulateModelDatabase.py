@@ -1,4 +1,5 @@
 import json
+import os.path
 from IssueModel.IssueModel import IssueModel
 from IssueModel.CommentModel import CommentModel
 from IssueModel.PullModel import PullModel
@@ -6,12 +7,12 @@ from IssueModel.RepositoryModel import RepositoryModel
 from GitHubAdapter.GraphQLGitHub import GetAllRelatedIssues
 
 def PopulateRepositoryModelDatabase(base_path):
-    ListOfDicOfIssues = readJson(base_path+"_issues.json")
-    ListOfDicOfComments = readJson(base_path+"_comments.json")
-    ListOfDicOfCommits = readJson(base_path+"_commits.json")
-    ListOfDicOfEvents = readJson(base_path+"_events.json")
-    DictRelatedIssues = readJson(base_path+"_PullRequestRelatedIssueNumbres.json")
-    Dict_PullRequestNumber_ContributingUserLoginNames = readJson(base_path+"_PullRequestNumber_ContributingUserLoginNames.json")
+    ListOfDicOfIssues = readJson(base_path+"_issues.json")   
+    ListOfDicOfComments = readJson(base_path+"_comments.json") if os.path.exists(base_path+"_comments.json") else None
+    ListOfDicOfCommits = readJson(base_path+"_commits.json") if os.path.exists(base_path+"_commits.json") else None
+    ListOfDicOfEvents = readJson(base_path+"_events.json") if os.path.exists(base_path+"_events.json") else None
+    DictRelatedIssues = readJson(base_path+"_PullRequestRelatedIssueNumbres.json") if os.path.exists(base_path+"_PullRequestRelatedIssueNumbres.json") else None
+    Dict_PullRequestNumber_ContributingUserLoginNames = readJson(base_path+"_PullRequestNumber_ContributingUserLoginNames.json") if os.path.exists(base_path+"_PullRequestNumber_ContributingUserLoginNames.json") else None
     return createAllIssuesAndPulls(ListOfDicOfIssues, ListOfDicOfComments, ListOfDicOfCommits, ListOfDicOfEvents, DictRelatedIssues, Dict_PullRequestNumber_ContributingUserLoginNames)
 
 def createAllIssuesAndPulls(ListOfDicOfIssues, ListOfDicOfComments, ListOfDicOfCommits, ListOfDicOfEvents, DictRelatedIssues, Dict_PullRequestNumber_ContributingUserLoginNames):
@@ -22,19 +23,21 @@ def createAllIssuesAndPulls(ListOfDicOfIssues, ListOfDicOfComments, ListOfDicOfC
     for dicOfIssue in ListOfDicOfIssues:
         if not "pull_request" in dicOfIssue:
             newIssue = IssueModel(**{ key : dicOfIssue[key] for key in Keys})
-            for dicOfComments in ListOfDicOfComments:
-                if ( dicOfComments["issue_url"] == dicOfIssue["url"]):
-                    if newIssue.comments_list == None:
-                        newIssue.comments_list = []
-                    newIssue.comments_list.append(createComment(dicOfComments))
+            if ListOfDicOfComments:
+                for dicOfComments in ListOfDicOfComments:
+                    if ( dicOfComments["issue_url"] == dicOfIssue["url"]):
+                        if newIssue.comments_list == None:
+                            newIssue.comments_list = []
+                        newIssue.comments_list.append(createComment(dicOfComments))
             dictAllIssues[int(newIssue.number)] = newIssue
         else:
             newPull = PullModel(**{ key : dicOfIssue[key] for key in Keys})
-            for dicOfComments in ListOfDicOfComments:
-                if ( dicOfComments["issue_url"] == dicOfIssue["url"]):
-                    if newPull.comments_list == None:
-                        newPull.comments_list = []
-                    newPull.comments_list.append(createComment(dicOfComments))
+            if ListOfDicOfComments:
+                for dicOfComments in ListOfDicOfComments:
+                    if ( dicOfComments["issue_url"] == dicOfIssue["url"]):
+                        if newPull.comments_list == None:
+                            newPull.comments_list = []
+                        newPull.comments_list.append(createComment(dicOfComments))
             dictAllPulls[int(newPull.number)] = newPull
 
 

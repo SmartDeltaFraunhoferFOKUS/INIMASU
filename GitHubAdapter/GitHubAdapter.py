@@ -8,9 +8,9 @@ from GitHubAdapter.PopulateModelDatabase import PopulateRepositoryModelDatabase
 
 def ReadFromGitHubAndStoreInJson(repo_owner,repo_name,access_token,file_path_base):
     get_issues_in_json_file(repo_owner,repo_name,access_token,file_path_base)
-    get_comments_in_json_file(repo_owner,repo_name,access_token,file_path_base)
-    get_events_in_json_file(repo_owner,repo_name,access_token,file_path_base)
-    get_commits_in_json_file(repo_owner,repo_name,access_token,file_path_base)
+    #get_comments_in_json_file(repo_owner,repo_name,access_token,file_path_base)
+    #get_events_in_json_file(repo_owner,repo_name,access_token,file_path_base)
+    #get_commits_in_json_file(repo_owner,repo_name,access_token,file_path_base)
     get_PullRequestRelatedIssueNumbres_in_json_file(repo_owner, repo_name, access_token, file_path_base)
     get_PullRequest_ContributingUserLoginNames_in_json_file(repo_owner, repo_name, access_token, file_path_base)
 
