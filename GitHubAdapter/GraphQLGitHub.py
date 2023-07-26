@@ -3,7 +3,7 @@ from gql.transport.aiohttp import AIOHTTPTransport
 
 def GetAllRelatedIssues(repo_owner, repo_name, access_token):
 
-    _headers= {'Authorization': 'bearer' + " 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"}
+    _headers= {'Authorization': 'bearer ' + access_token}
     # Select your transport with a defined url endpoint
     transport = AIOHTTPTransport(url="https://api.github.com/graphql", headers=_headers)
 
@@ -69,7 +69,7 @@ def GetAllRelatedIssues(repo_owner, repo_name, access_token):
 
 def GetContributingUserLoginNamesForPullRequests(repo_owner, repo_name, access_token):
 
-    _headers= {'Authorization': 'bearer' + " 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"}
+    _headers= {'Authorization': 'bearer ' + access_token}
     # Select your transport with a defined url endpoint
     transport = AIOHTTPTransport(url="https://api.github.com/graphql", headers=_headers)
 
