@@ -9,6 +9,7 @@ import datetime
 import os.path
 import tkinter
 from tkinter.tix import COLUMN
+import matplotlib.pyplot as pyplot
 
 sys.path.append(str(pathlib.Path().resolve()))
 
@@ -28,7 +29,7 @@ class INIMASU_GUI:
         self.button_width_in_pixels=92
         self.path_for_images="./INIMASU_GUI/Images/"
 
-    def StartMainLoop(self):
+    def StartMainLoop(self) -> int:
 
         widget_main = Tk()
         widget_main.title("INIMASU")
@@ -102,6 +103,7 @@ class INIMASU_GUI:
                     Update_UI()
 
         def Application_Exit():
+            pyplot.close('all')
             widget_main.destroy()
 
         Toolbar_Main = Frame(Frame_Main, borderwidth=1, relief=GROOVE)
@@ -174,8 +176,11 @@ class INIMASU_GUI:
             with open("access_token.json", 'w') as file:
                 json.dump(StringVar_AccessToken.get(), file, indent=4)
 
-def Main_INIMASU_GUI():
-    Instance_INIMASU_GUI = INIMASU_GUI()
-    Instance_INIMASU_GUI.StartMainLoop()
+        return 0
 
-Main_INIMASU_GUI()
+def Main_INIMASU_GUI() -> int:
+    Instance_INIMASU_GUI = INIMASU_GUI()
+    sys.exit(Instance_INIMASU_GUI.StartMainLoop())
+
+if __name__ == "__main__":
+    Main_INIMASU_GUI()

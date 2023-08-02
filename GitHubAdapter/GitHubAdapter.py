@@ -3,7 +3,7 @@ from GitHubAdapter.ExtractCommentsFromRepositoryAsJson import get_comments_in_js
 from GitHubAdapter.ExtractEventsFromRepositoryAsJson import get_events_in_json_file
 from GitHubAdapter.ExtractCommitsFromRepositoryAsJson import get_commits_in_json_file
 from GitHubAdapter.ExtractPullRequestRelatedIssueNumbresFromRepositoryAsJson import get_PullRequestRelatedIssueNumbres_in_json_file
-from GitHubAdapter.ExtractPullRequestContributingUserLoginNamesFromRepositoryAsJson import get_PullRequest_ContributingUserLoginNames_in_json_file
+from GitHubAdapter.ExtractPullRequestContributingUserInfosFromRepositoryAsJson import get_PullRequest_ContributingUserInfos_in_json_file
 from GitHubAdapter.PopulateModelDatabase import PopulateRepositoryModelDatabase
 
 def ReadFromGitHubAndStoreInJson(repo_owner,repo_name,access_token,file_path_base):
@@ -12,7 +12,7 @@ def ReadFromGitHubAndStoreInJson(repo_owner,repo_name,access_token,file_path_bas
     #get_events_in_json_file(repo_owner,repo_name,access_token,file_path_base)
     #get_commits_in_json_file(repo_owner,repo_name,access_token,file_path_base)
     get_PullRequestRelatedIssueNumbres_in_json_file(repo_owner, repo_name, access_token, file_path_base)
-    get_PullRequest_ContributingUserLoginNames_in_json_file(repo_owner, repo_name, access_token, file_path_base)
+    get_PullRequest_ContributingUserInfos_in_json_file(repo_owner, repo_name, access_token, file_path_base)
 
 
 def PopulateModelDatabaseFromJson(file_path_base):
