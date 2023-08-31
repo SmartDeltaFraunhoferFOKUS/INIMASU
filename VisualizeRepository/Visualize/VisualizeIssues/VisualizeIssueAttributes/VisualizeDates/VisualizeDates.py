@@ -11,7 +11,8 @@ from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.Visu
 
 
 # Visualizes amount of issues that were created and closed over time
-# visualizes commits over time, when given
+# Visualizes commits over time, when given
+# Visualizes forks
 def visualizeDates(created_dates, closed_dates, labels, commits=None, forks=None):
     # Extract the counts and average times per month
     month_years, created_counts, closed_counts, average_times, difference_counts = getavereageTimePerMonth(
@@ -64,6 +65,9 @@ def visualizeDates(created_dates, closed_dates, labels, commits=None, forks=None
     num_entries = len(created_dates)
     plt.text(1.02, 0.5, f"Number of Entries:\n{num_entries}", transform=ax1.transAxes, fontsize=12,
              verticalalignment='center')
+
+    # This function enables the feature, that one can click on the month in the plot and visualizing the top 5 labels
+    # in that month
     def display_top_labels(event):
         if event.inaxes == ax1:
             month_index = int(event.xdata)
@@ -78,15 +82,19 @@ def visualizeDates(created_dates, closed_dates, labels, commits=None, forks=None
                                fontsize=12)
                 plt.draw()
 
+    # Displays the figure regarding given matrix
+
     if commits is None and forks is None:
         fig.canvas.mpl_connect('button_press_event', display_top_labels)
         plt.tight_layout()
         plt.show()
+
     if commits:
         updatedFig = getFigureCommits(fig, ax1, ax2, commits, x_labels, gs)
         updatedFig.canvas.mpl_connect('button_press_event', display_top_labels)
         plt.tight_layout()
         plt.show()
+
     if forks:
         updatedFig = getFigureforks(fig, ax1, ax2, forks, x_labels, gs)
         updatedFig.canvas.mpl_connect('button_press_event', display_top_labels)

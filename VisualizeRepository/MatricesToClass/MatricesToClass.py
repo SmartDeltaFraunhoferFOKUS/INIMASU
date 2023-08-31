@@ -1,6 +1,6 @@
-from VisualizeRepository.MatricesToClass.CommitsInspection.JsonToCommits.JsonToCommits import jsonToCommits
+from VisualizeRepository.MatricesToClass.CommitsInspection.JsonToCommits import jsonToCommits
 from VisualizeRepository.MatricesToClass.ForkInspection.JsonToFork import jsonToForks
-from VisualizeRepository.MatricesToClass.IssueInspection.JsonToIssue.JsonToIssue import jsonToIssue
+from VisualizeRepository.MatricesToClass.IssueInspection.JsonToIssue import jsonToIssue
 
 
 def matricesToClass(matrices, matricesFiles):

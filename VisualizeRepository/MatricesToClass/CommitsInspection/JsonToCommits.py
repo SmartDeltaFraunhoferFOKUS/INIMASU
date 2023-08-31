@@ -1,6 +1,6 @@
 import json
 
-from VisualizeRepository.MatricesToClass.CommitsInspection.Commits.Commits import Commits
+from VisualizeRepository.MatricesToClass.CommitsInspection.Commits import Commits
 
 
 def jsonToCommits(path):

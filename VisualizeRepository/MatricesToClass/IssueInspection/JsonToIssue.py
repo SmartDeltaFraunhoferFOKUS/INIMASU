@@ -1,5 +1,5 @@
 import json
-from VisualizeRepository.MatricesToClass.IssueInspection.Issue.IssueClass import IssueClass
+from VisualizeRepository.MatricesToClass.IssueInspection.IssueClass import IssueClass
 
 
 def jsonToIssue(path):

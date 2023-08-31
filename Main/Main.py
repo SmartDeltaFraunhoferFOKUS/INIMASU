@@ -7,19 +7,18 @@ from VisualizeRepository.Visualize.Visualize import visualize
 
 # Extracts information from a GitHub Repository and writes the Information into a json
 # The Json is visualized afterwards
-
+# The matrix "issues" must always be given, since we want to visualize insights for the accurance of issues.
 
 def main(repo_owner='vaadin', repo_name='flow', matrices=["issues"], access_token=None):
     matricesFiles = []
-    # checks if the json for the regarding matrix exists and creates a json if needed
+    # Checks if the json for the regarding matrix exists and creates a json if needed
     for matrix in matrices:
         matricesFiles.append(createJsonFromMatrix(repo_owner, repo_name, matrix, access_token))
 
-    # visualies the given data
+    # Visualizes the given data
     visualize(matrices, matricesFiles)
 
-
-main(matrices=["issues","commits"])
+main(matrices=["issues"])
 
 """
 possible other repository to test on

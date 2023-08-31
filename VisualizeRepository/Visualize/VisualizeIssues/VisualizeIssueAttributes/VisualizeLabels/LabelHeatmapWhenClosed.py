@@ -3,11 +3,12 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import TextBox
 from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.VisualizeLabels.HelpFunctionsLabels import getLabelNames
 
-
-# generates a heatmap to get overview between two labels and their avrg. combined closing time
-
+# Function to generate a heatmap to visualize the relationship between two labels and their average combined closing time
 def generate_label_heatmap(labels, answer_times):
+    # Get label names from the provided labels
     label_names = getLabelNames(labels)
+
+    # Calculate combined label data (label pairs and their answer times)
     label_data = get_combined_label_data(label_names, answer_times)
 
     # Calculate the average answer time for label pairs
@@ -16,6 +17,7 @@ def generate_label_heatmap(labels, answer_times):
             numbers = label_data[key1][key2]
             label_data[key1][key2] = sum(numbers) / len(numbers) if numbers else 0
 
+    # Initialize an empty list to store heatmap data
     heatmap_data_list = []
     allKeys = list(label_data.keys())
 
@@ -54,6 +56,7 @@ def generate_label_heatmap(labels, answer_times):
     # Enable zooming and panning
     plt.tight_layout()
 
+    # Function to handle label search in the heatmap
     def search_callback(text):
         search_label = text.strip()
         if search_label:
@@ -62,16 +65,16 @@ def generate_label_heatmap(labels, answer_times):
                 ax.scatter(indices, indices, marker='o', s=100, edgecolors='red', facecolors='none')
                 plt.draw()
 
-    # Create search bar
+    # Create a search bar
     search_ax = plt.axes([0.06, 0.4, 0.1, 0.05])
     search_textbox = TextBox(search_ax, 'Search Label')
     search_textbox.on_submit(search_callback)
 
+    # Show the heatmap
     plt.show()
 
-
-
-
+# The rest of the functions are helper functions used in the generate_label_heatmap function.
+# You may consider adding comments to them as needed for further clarification.
 
 
 def updateLabelNames(labels):

@@ -1,39 +1,46 @@
+import os
+from datetime import datetime
+
 import requests
 import json
 
 
 def download_matrix(repo_owner, repo_name, access_token, matrix):
     base_url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/{matrix}'
-    matrix = []
+
+    # Fetch the code-frequency matrix from the GitHub API
+    headers = {'Authorization': f'token {access_token}'}
+
+    result_matrix = []
 
     page = 1
     while True:
-        # Fetch a page of issues from the GitHub API, including the access token
-        headers = {'Authorization': f'token {access_token}'}
-        response = requests.get(f'{base_url}?state=all&page={page}', headers=headers)
+        response = requests.get(base_url, headers=headers, params={'page': page})
 
         if response.status_code != 200:
-            print(f'Error retrieving matrix: {response.text}')
-            return
+            print(f'Error retrieving {matrix}: {response.text}')
+            return []
 
-        page_matrix = response.json()
+        matrix_page = response.json()
 
-        if not page_matrix:
-            # No more issues found, stop pagination
+        if not matrix_page:
             break
 
-        matrix.extend(page_matrix)
+        result_matrix.extend(matrix_page)
         page += 1
 
-    return matrix
+    print(f'Total entries retrieved: {len(result_matrix)}')
 
-def get_matrix_in_json(repo_owner,repo_name, matrix, access_token):
-    # Download the issues
-    all_matrix = download_matrix(repo_owner, repo_name, access_token,matrix)
+    return result_matrix
+
+
+def get_matrix_in_json(repo_owner, repo_name, matrix, access_token):
+    # Download the matrix
+    all_matrix = download_matrix(repo_owner, repo_name, access_token, matrix)
 
     if all_matrix:
-        # Store the issues in a JSON file
-        file_path = f'next.js_{repo_owner}_{matrix}.json'
+        # Store the matrix in a JSON file
+        file_path = f'next.js_{repo_owner}_{matrix.replace("/", "_")}.json'
         with open(file_path, 'w') as file:
             json.dump(all_matrix, file, indent=4)
 

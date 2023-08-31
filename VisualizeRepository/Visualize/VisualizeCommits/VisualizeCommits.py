@@ -5,8 +5,8 @@ from VisualizeRepository.Visualize.VisualizeIssues.VisualizeIssueAttributes.Visu
 
 
 def visualizeCommits(commits, issues):
-    #creates the data points for the plot
-    #shows the commits in comparisson to avrg. closing time and generell trafic on the repo
+    # Creates the data points for the plot
+    # Shows the commits in comparison to avrg. closing time and general traffic on the repo
     labels = [issue.labels if issue.labels else 'No Label' for issue in issues]
     created_dates = [datetime.strptime(issue.created_at, '%Y-%m-%dT%H:%M:%SZ') if issue.created_at else None for issue
                      in issues]

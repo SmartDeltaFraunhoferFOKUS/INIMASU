@@ -7,24 +7,8 @@ import matplotlib.pyplot as plt
 
 #Help function to create the needed datapoints for visualizeDates
 def getavereageTimePerMonth(created_dates, closed_dates):
-    months_data = {}
-
-    # Calculate the counts and average times per month
-    for created_date, closed_date in zip(created_dates, closed_dates):
-        created_month_year = created_date.strftime("%Y-%m")
-        if created_month_year not in months_data:
-            months_data[created_month_year] = {"created_count": 0, "closed_count": 0, "total_time": 0,
-                                               "average_time": 0}
-        months_data[created_month_year]["created_count"] += 1
-
-        if closed_date:  # Check if closed_date exists
-            closed_month_year = closed_date.strftime("%Y-%m")
-            if closed_month_year not in months_data:
-                months_data[closed_month_year] = {"created_count": 0, "closed_count": 0, "total_time": 0,
-                                                  "average_time": 0}
-            months_data[closed_month_year]["closed_count"] += 1
-            answer_time = (closed_date - created_date).days
-            months_data[closed_month_year]["total_time"] += answer_time
+    # Dic containing the amount of closed, created and answer_time per month
+    months_data = getMonthsData(created_dates, closed_dates)
 
     # Extract the month-year values and sort them
     month_years = sorted(months_data.keys())
@@ -32,21 +16,22 @@ def getavereageTimePerMonth(created_dates, closed_dates):
     # Extract the counts and average times per month
     created_counts = [months_data[month_year]["created_count"] for month_year in month_years]
     closed_counts = [months_data[month_year]["closed_count"] for month_year in month_years]
-    average_times = [
-        months_data[month_year]["total_time"] / months_data[month_year]["closed_count"] if months_data[month_year]["closed_count"] != 0 else 0 for month_year in month_years]
+    average_times = [months_data[month_year]["total_time"] / months_data[month_year]["closed_count"] if months_data[month_year]["closed_count"] != 0 else 0 for month_year in month_years]
     difference_counts = [created - closed for created, closed in zip(created_counts, closed_counts)]
 
     return month_years, created_counts, closed_counts, average_times, difference_counts
 
 def getLabelsPerMonth(sorted_data_labels):
+    # generates a dic containing the labels used per month
     monthly_labels = {}
 
     for label, created_date in sorted_data_labels:
-        month = datetime(created_date.year, created_date.month, 1).strftime('%Y-%m')  # Fix the line here
+        month = datetime(created_date.year, created_date.month, 1).strftime('%Y-%m')
 
         if month not in monthly_labels:
             monthly_labels[month] = []
 
+        # gives back valid label as a string
         names = getLabelNames(label)
         for n in names:
             if n and isValidLabel(n):
@@ -54,10 +39,34 @@ def getLabelsPerMonth(sorted_data_labels):
 
     return monthly_labels
 
+def getMonthsData(created_dates, closed_dates):
+    # creating a dic containing the amount of closed, created and answer_time per month
+    months_data = {}
 
+    for created_date, closed_date in zip(created_dates, closed_dates):
+        created_month_year = created_date.strftime("%Y-%m")
+
+        if created_month_year not in months_data:
+            months_data[created_month_year] = {"created_count": 0, "closed_count": 0, "total_time": 0}
+
+        months_data[created_month_year]["created_count"] += 1
+
+        # Check if closed_date exists
+        if closed_date:
+            closed_month_year = closed_date.strftime("%Y-%m")
+
+            if closed_month_year not in months_data:
+                months_data[closed_month_year] = {"created_count": 0, "closed_count": 0, "total_time": 0}
+
+            months_data[closed_month_year]["closed_count"] += 1
+            answer_time = (closed_date - created_date).days
+            months_data[closed_month_year]["total_time"] += answer_time
+
+    return months_data
 
 
 def getTopUsedWords(labelsPerMonth):
+    # Generates a dict, key = month, values = top 5 used labels per month
     top_words_per_month = {}
 
     for month, labels in labelsPerMonth.items():
