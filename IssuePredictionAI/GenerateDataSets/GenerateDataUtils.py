@@ -9,7 +9,9 @@ import torch
 from transformers import GPT2Tokenizer, GPT2Model
 import tensorflow as tf
 from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
+
 nltk.download('punkt')
+
 
 # Function to get events (commits or issues) per day
 def get_event_per_day(data, event):
@@ -17,6 +19,7 @@ def get_event_per_day(data, event):
         return check_missing_days(get_commits_per_day(data))
     elif event == "issues":
         return check_missing_days(get_issues_per_day(data))
+
 
 # Function to align dates of two data dictionaries
 def align_dates_of_data(data1, data2):
@@ -40,6 +43,7 @@ def align_dates_of_data(data1, data2):
 
     return data1, data2
 
+
 # Function to get commits per day from data
 def get_commits_per_day(data):
     commitPerDays = {}
@@ -52,6 +56,7 @@ def get_commits_per_day(data):
         else:
             commitPerDays[date_truncated] = 1
     return commitPerDays
+
 
 # Function to get issues per day from data
 def get_issues_per_day(data):
@@ -66,6 +71,7 @@ def get_issues_per_day(data):
             issuePerDays[date_truncated] = 1
     return issuePerDays
 
+
 # Function to check and fill missing days in an event dictionary
 def check_missing_days(eventDic):
     first_day = min(eventDic.keys())
@@ -76,6 +82,7 @@ def check_missing_days(eventDic):
             eventDic[current_day] = 0
         current_day += timedelta(days=1)
     return eventDic
+
 
 # Function to get metrics per day from data
 def get_metric_from_data(data: dict, metric: list, date_key: list):
@@ -89,6 +96,7 @@ def get_metric_from_data(data: dict, metric: list, date_key: list):
         else:
             metricPerDays[date_truncated] = [get_value_from_nested_dict(dicOfMetric, metric)]
     return check_missing_days(metricPerDays)
+
 
 # Function to get a value from a nested dictionary using a list of keys
 def get_value_from_nested_dict(nested_dict, keys):
@@ -104,6 +112,7 @@ def get_value_from_nested_dict(nested_dict, keys):
         return get_value_from_nested_dict(next_level_dict, keys[1:])
 
     return 0
+
 
 # Function to resize a dictionary to a given length with zero values
 def get_dic_to_given_length(dic, start_date, end_date):
@@ -122,6 +131,7 @@ def get_dic_to_given_length(dic, start_date, end_date):
 
     return new_dic
 
+
 # Function for text vectorization using a custom model
 def vectorizing_own_model(strings, giveLayer=False, vocab_size=1000):
     vectorize_layer = TextVectorization(
@@ -134,9 +144,10 @@ def vectorizing_own_model(strings, giveLayer=False, vocab_size=1000):
     vectorize_layer.adapt(text_ds)
 
     if giveLayer:
-        return vectorize_layer(tf.constant(tensor))
+        return vectorize_layer(tf.constant(tensor)), vectorize_layer
 
     return vectorize_layer(tf.constant(tensor))
+
 
 # Function to process code frequency data
 def get_code_frequency(code_frequency):
@@ -155,6 +166,7 @@ def get_code_frequency(code_frequency):
 
     return frequency_overview
 
+
 # Function to resize code frequency data to a given length
 def code_frequency_to_given_length(dic, start_date, end_date):
     new_dic = {}
@@ -168,6 +180,7 @@ def code_frequency_to_given_length(dic, start_date, end_date):
         current_day += timedelta(days=1)
 
     return new_dic
+
 
 # Function to process release data
 def get_releases(releases):
@@ -184,6 +197,7 @@ def get_releases(releases):
             releases_overview[date] = version_number
 
     return releases_overview
+
 
 # Function to resize release data to a given length
 def releases_to_given_length(dic, start_date, end_date):
@@ -202,8 +216,83 @@ def releases_to_given_length(dic, start_date, end_date):
 
     return new_dic
 
+
 # Function to convert a version string to an integer
 def version_to_integer(version):
     components = version.split('.')
     major, minor, patch = map(int, components[:3])
     return major * 1000000 + minor * 10000 + patch * 100
+
+
+import os
+import numpy as np
+
+import os
+import numpy as np
+
+
+def generate_input_sequences(input_data_train, predict_window, analysis_window, output_file):
+    if not os.path.isfile(output_file):
+        # Initialize a list to store input sequences
+        input_sequences = []
+
+        # Iterate through the input data to create input sequences
+        size = len(input_data_train)
+        for i in range(0, size, predict_window + analysis_window):
+            if size - i >= analysis_window:
+                # Extract the historical data for the current sequence
+                sequence = input_data_train[i: i + analysis_window]
+                sequence = np.concatenate(sequence, axis=0).flatten().astype(np.float32)
+
+            #else:
+            #    # Add zeros to the end of the sequence to match the rolling window size
+            #    pad_length = analysis_window - (size - i)
+            #    sequence = input_data_train[i: size]
+
+            #   zeros = np.zeros((pad_length, input_data_train.shape[1]), dtype=np.float32)
+            #    sequence = np.concatenate([sequence, zeros], axis=0).flatten()
+
+            # Append the sequence to the list
+                input_sequences.append(sequence)
+        input_sequences = np.array(input_sequences)
+        # Save input_sequences to a file
+        np.save(output_file, input_sequences, allow_pickle=True)
+
+    else:
+        # Load input_sequences from the file
+        input_sequences = np.load(output_file, allow_pickle=True)
+
+    return input_sequences
+
+
+def generate_label_sequences(input_labels, predict_window, analysis_window, output_file):
+    if not os.path.isfile(output_file):
+        # Initialize a list to store input sequences
+        input_sequences = []
+
+        # Iterate through the input data to create input sequences
+        size = len(input_labels)
+        for i in range(analysis_window - 1, size, predict_window + analysis_window):
+            if size - i >= predict_window:
+                # Extract the historical data for the current sequence
+                sequence = np.array(input_labels[i: i + predict_window]).astype(np.float32)
+
+            else:
+                # Add zeros to the end of the sequence to match the rolling window size
+                pad_length = predict_window - (size - i)
+                sequence = input_labels[i: size]
+
+                zeros = np.zeros((pad_length, input_labels.shape[1]), dtype=np.float32)
+                sequence = np.concatenate([sequence, zeros], axis=0).flatten()
+
+            # Append the sequence to the list
+            input_sequences.append(sequence)
+        input_sequences = np.array(input_sequences)
+        # Save input_sequences to a file
+        np.save(output_file, input_sequences, allow_pickle=True)
+
+    else:
+        # Load input_sequences from the file
+        input_sequences = np.load(output_file, allow_pickle=True)
+
+    return input_sequences

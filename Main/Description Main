@@ -1,0 +1,2 @@
+The primary function of this code is to visualize the issues within a specified GitHub repository and retrieve the required data in JSON format.
+The input matrices support the following requests: ["issues," "commits," "forks"].
