@@ -7,3 +7,7 @@
 /INIMASU_GUI/Python 3_9 64 Bit
 *.json
 *.pyc
+*.zip
+/envPython3_13_64
+/vaadin_flow
+/vaadin_hilla
