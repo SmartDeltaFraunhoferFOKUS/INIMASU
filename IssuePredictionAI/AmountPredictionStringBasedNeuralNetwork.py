@@ -1,12 +1,12 @@
-import warnings
-
 import numpy as np
 from keras import Model
-from keras.layers import Input, Concatenate, Dense
-from sklearn.inspection import permutation_importance
+from keras.layers import Input, Concatenate, Dense, Dropout
+from keras.saving.save import load_model
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
+from IssuePredictionAI.GenerateDataSets.AnalyzeTextImportency import analyze_feature_importance, \
+    calculate_feature_importance
 from IssuePredictionAI.GenerateDataSets.GenerateDataUtils import vectorizing_own_model
 from IssuePredictionAI.GenerateDataSets.GenerateDataSets import getData
 
@@ -17,9 +17,9 @@ data = getData(textVectorization=True)
 dates, commit_counts, issue_counts, vec_labels_issues, vec_description_issue, vec_message_commit, added, subtracted = data
 
 # Vectorize text features
-vec_labels_issues_int = vectorizing_own_model(vec_labels_issues, giveLayer=True, vocab_size=2800)
-vec_description_issue_int = vectorizing_own_model(vec_description_issue, giveLayer=True, vocab_size=100)
-vec_message_commit_int = vectorizing_own_model(vec_message_commit, giveLayer=True, vocab_size=500)
+vec_labels_issues_int, vec_labels_issues_layer = vectorizing_own_model(vec_labels_issues, giveLayer=True, vocab_size=2800)
+vec_description_issue_int, vec_description_issue_layer = vectorizing_own_model(vec_description_issue, giveLayer=True, vocab_size=100)
+vec_message_commit_int, vec_message_commit_layer  = vectorizing_own_model(vec_message_commit, giveLayer=True, vocab_size=500)
 
 # Convert dates to numeric values
 dates_numeric = [(date - min(dates)).days for date in dates]
@@ -54,6 +54,11 @@ scaler = MinMaxScaler()
 input_data_train_normalized = scaler.fit_transform(input_data_train)
 input_data_test_normalized = scaler.transform(input_data_test)
 
+
+
+
+
+
 # Define input shapes
 input_shape_vec_labels_issues = (vec_labels_issues.shape[1],)
 input_shape_vec_description_issue = (vec_description_issue.shape[1],)
@@ -86,6 +91,7 @@ concatenated = Concatenate()([
 
 # Dense layers
 dense1 = Dense(512, activation='relu')(concatenated)
+dropout1 = Dropout(0.3)(dense1)
 dense2 = Dense(256, activation='relu')(dense1)
 dense3 = Dense(64, activation='relu')(dense2)
 output_layer = Dense(1, activation='linear')(dense3)
@@ -142,5 +148,6 @@ print(f"Test loss: {loss:.4f}, Test MAE: {mae:.4f}")
 
 # Save the model
 model.save("my_trained_model_amount_strings.h5")
+
 
 

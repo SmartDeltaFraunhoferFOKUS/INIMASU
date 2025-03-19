@@ -1,5 +1,5 @@
+from VisualizeRepository.MatricesToClass.IssueInspection.Issue.IssueClass import IssueClass
 from VisualizeRepository.MatricesToClass.MatricesToClass import matricesToClass
-from VisualizeRepository.MatricesToClass.IssueInspection.IssueClass import IssueClass
 from VisualizeRepository.MatricesToClass.CommitsInspection.Commits import Commits
 from VisualizeRepository.Visualize.VisualizeCommits.VisualizeCommits import visualizeCommits
 from VisualizeRepository.Visualize.VisualizeForks.VisualizeForks import visualizeForks

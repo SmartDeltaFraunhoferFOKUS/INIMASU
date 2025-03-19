@@ -1,0 +1,41 @@
+In this section, I will discuss different machine learning models and their respective goals.
+For detailed information on how each model operates, please refer to the corresponding file.
+
+To use these models, you need to provide paths to JSON files. These JSON files must be downloaded from the relevant repositories.
+You can accomplish this by using the "createJsonFromMatrix(repo_owner, repo_name, matrix, access_token)" function found in "VisualizeRepository/ExtractMatrixFromRepository/WriteInsightsToJson.py."
+
+
+AboveAverageIssueNeuralNetwork.py:
+
+Objective: This model was initially developed to predict the number of issues expected in the following day.
+Specifically, it predicts whether more issues will occur than the average.
+
+
+AmountPredictionNeuralNetwork.py:
+
+Objective: Building upon the average prediction, this model aims to predict the precise number of upcoming issues.
+
+
+AmountPredictionStringBasedNeuralNetwork.py:
+
+Objective: To improve accuracy, this model is fed with textual data from
+issue descriptions, label descriptions, and commit descriptions.
+However, vectorizing the string data posed challenges, as the model tended to either overfit or
+ignore this information during training.
+
+
+PredictRollingWindowNeuralNetwork.py:
+
+Objective: This model predicts upcoming issues based on an analysis window and
+forecasts issues for future days within the prediction window.
+
+
+Further Work:
+
+The models exhibit similar accuracy when predicting one day ahead or thirty days ahead.
+This similarity is likely due to a learning process where the models memorize issues from specific days
+or days around a particular date and attempt to match the target day.
+
+In the last model, "PredictRollingWindowNeuralNetwork.py," an attempt was made to address this issue by
+using non-overlapping analysis and prediction windows, with the hope that the model would not "cheat." However, based on accuracy results,
+it appears that this approach did not yield significant improvements.

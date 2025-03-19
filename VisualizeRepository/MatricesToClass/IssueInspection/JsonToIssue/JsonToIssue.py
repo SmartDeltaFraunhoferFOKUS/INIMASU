@@ -1,5 +1,4 @@
 import json
-
 from VisualizeRepository.MatricesToClass.IssueInspection.Issue.IssueClass import IssueClass
 
 
